@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityStandardAssets.Cameras;
 
 public class LapChecker : MonoBehaviour
 {
@@ -10,6 +11,14 @@ public class LapChecker : MonoBehaviour
 
 
     [SerializeField] private TMP_Text lapInfo;
+
+    //Referencias
+    [SerializeField] private TimeController timer;
+    [SerializeField] private GhostRecorder recorder;
+    [SerializeField] private GhostPlayer ghostPlayer;
+    [SerializeField] private AutoCam cam;
+
+
     //Events
     public static event Action<int> OnLapCompleted;
     private void Awake()
@@ -21,23 +30,36 @@ public class LapChecker : MonoBehaviour
     {
         if (other.CompareTag("Player") && AllCheckpointsValidated())
         {
-            if (totalLaps >= laps)
-            {
-                print("END");
-            }
-
             laps++;
             OnLapCompleted?.Invoke(laps);
             UpdateUI();
+
+            if (laps > totalLaps)
+            {
+                recorder.StopRecording();
+                cam.enabled = false;
+
+                if (timer.IsBestRace())
+                {
+                    timer.SaveBestRace();
+                    recorder.SaveGhost();
+                    ghostPlayer.StartGhost();
+                }
+                else
+                {
+                    recorder.ghostData.ResetData();
+                }
+                return;
+            }
+
 
             for (int i = 0; i < checkpoints.Length; i++)
             {
                 checkpoints[i].validated = false;
             }
-
-
         }
     }
+
     private bool AllCheckpointsValidated()
     {
         for (int i = 0; i < checkpoints.Length; i++)
@@ -46,6 +68,7 @@ public class LapChecker : MonoBehaviour
         }
         return true;
     }
+
     private void UpdateUI()
     {
         lapInfo.text = "Lap: " + laps + " / " + totalLaps;
