@@ -22,10 +22,6 @@ public class MenuDataLoader : MonoBehaviour
         InitPickLists();
     }
 
-    public void StartGame()
-    {
-
-    }
     public void ExitGame()
     {
         Application.Quit();

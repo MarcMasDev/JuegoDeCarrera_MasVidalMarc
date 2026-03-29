@@ -41,7 +41,7 @@ public class TimeController : MonoBehaviour
 
     private void Start()
     {
-        if (bestGhostData.checkpointTimes.Count == 0) ghostDiffPopup.alpha = 0;
+        if (bestGhostData == null || bestGhostData.checkpointTimes.Count == 0) ghostDiffPopup.alpha = 0;
         else ghostDiffPopup.alpha = 1;
     }
     private void Update()
@@ -157,13 +157,9 @@ public class TimeController : MonoBehaviour
 
     public bool IsBestRace()
     {
-        return GetTotalRaceTime() < bestRaceTime;
+        return GetTotalRaceTime() < bestGhostData.raceTime;
     }
 
-    public void SaveBestRace()
-    {
-        bestRaceTime = GetTotalRaceTime();
-    }
     private string FormatGhostText(float ghostTimeDifference)
     {
         if (ghostTimeDifference < 0)

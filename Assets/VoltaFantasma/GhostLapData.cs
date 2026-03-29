@@ -8,6 +8,7 @@ public class GhostLapData : ScriptableObject
     public List<Quaternion> carRotations = new List<Quaternion>();
     public List<float> carTimes = new List<float>();
     public List<float> checkpointTimes = new List<float>();
+    public float raceTime = Mathf.Infinity;
     public void AddNewData(Transform t, float time)
     {
         carPositions.Add(t.position);
@@ -29,7 +30,7 @@ public class GhostLapData : ScriptableObject
         checkpointTimes.Clear();
     }
 
-    public void SetData(GhostLapData newData)
+    public void SetData(GhostLapData newData, float time)
     {
         ResetData();
 
@@ -49,5 +50,7 @@ public class GhostLapData : ScriptableObject
         {
             checkpointTimes.Add(newData.checkpointTimes[i]);
         }
+
+        raceTime = time;
     }
 }

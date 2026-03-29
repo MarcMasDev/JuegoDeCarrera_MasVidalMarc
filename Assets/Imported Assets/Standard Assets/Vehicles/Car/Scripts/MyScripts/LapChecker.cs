@@ -2,10 +2,10 @@ using System;
 using TMPro;
 using UnityEngine;
 using UnityStandardAssets.Cameras;
+using UnityStandardAssets.Vehicles.Car;
 
 public class LapChecker : MonoBehaviour
 {
-    private int laps = 1;
     [SerializeField] private int totalLaps = 0;
     [SerializeField] private Checkpoint[] checkpoints;
 
@@ -14,13 +14,12 @@ public class LapChecker : MonoBehaviour
 
     //Referencias
     [SerializeField] private TimeController timer;
-    [SerializeField] private GhostRecorder recorder;
-    [SerializeField] private GhostPlayer ghostPlayer;
     [SerializeField] private AutoCam cam;
-
+    private int playerLaps = 0;
 
     //Events
     public static event Action<int> OnLapCompleted;
+    public static event Action<Transform, float, bool> OnRaceCompleted;
     private void Awake()
     {
         ResetCheckpoints();
@@ -32,8 +31,29 @@ public class LapChecker : MonoBehaviour
         {
             AddLap();
 
-            if (laps > totalLaps) EndGame();
+            if (playerLaps >= totalLaps)
+            {
+                other.GetComponent<CarUserControl>().enabled = false;
+                other.enabled = false;
+
+                EndGame(other.transform);
+            }
+            else UpdateUI();
+
             ResetCheckpoints();
+        }
+
+        if (other.CompareTag("Enemy"))
+        {
+            CarAIControl aiLap = other.GetComponent<CarAIControl>();
+            aiLap.laps++;
+
+            if (aiLap.laps > totalLaps)
+            {
+                aiLap.enabled = false;
+                other.enabled = false;
+                EndGame(other.transform);
+            }
         }
     }
 
@@ -48,31 +68,18 @@ public class LapChecker : MonoBehaviour
 
     private void UpdateUI()
     {
-        lapInfo.text = "Lap: " + laps + " / " + totalLaps;
+        lapInfo.text = "Lap: " + playerLaps + " / " + totalLaps;
     }
 
     private void AddLap()
     {
-        laps++;
-        OnLapCompleted?.Invoke(laps);
-        UpdateUI();
+        playerLaps++;
+        OnLapCompleted?.Invoke(playerLaps);
     }
 
-    private void EndGame()
+    private void EndGame(Transform other)
     {
-        recorder.StopRecording();
-        cam.enabled = false;
-
-        if (timer.IsBestRace())
-        {
-            timer.SaveBestRace();
-            recorder.SaveGhost();
-            ghostPlayer.StartGhost();
-        }
-        else
-        {
-            recorder.ghostData.ResetData();
-        }
+        OnRaceCompleted?.Invoke(other, timer.GetTotalRaceTime(), timer.IsBestRace());
     }
 
     private void ResetCheckpoints()

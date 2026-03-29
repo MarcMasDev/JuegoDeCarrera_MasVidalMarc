@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Profiling;
 
 public class GhostRecorder : MonoBehaviour
 {
@@ -19,12 +20,14 @@ public class GhostRecorder : MonoBehaviour
     {
         Checkpoint.OnCheckpointReached += RecordCheckpoint;
         LapChecker.OnLapCompleted += RecordLap;
+        LapChecker.OnRaceCompleted += RaceEnd;
     }
 
     private void OnDisable()
     {
         Checkpoint.OnCheckpointReached -= RecordCheckpoint;
         LapChecker.OnLapCompleted -= RecordLap;
+        LapChecker.OnRaceCompleted -= RaceEnd;
     }
     void Update()
     {
@@ -50,19 +53,6 @@ public class GhostRecorder : MonoBehaviour
         time = 0;
     }
 
-    public void StopRecording()
-    {
-        recording = false;
-    }
-
-    public void SaveGhost()
-    {
-        if (ghostData.carTimes.Count > 0 && recordBest)
-        {
-            bestGhostData.SetData(ghostData);
-        }
-    }
-
     private void RecordCheckpoint(Checkpoint checkpoint)
     {
         if (recordBest) ghostData.checkpointTimes.Add(time);
@@ -70,5 +60,26 @@ public class GhostRecorder : MonoBehaviour
     private void RecordLap(int lap)
     {
         if (recordBest) ghostData.checkpointTimes.Add(time);
+    }
+    private void RaceEnd(Transform endedTransform, float time, bool isBest)
+    {
+        if (endedTransform != transform) return;
+
+        StopRecord();
+
+        if (isBest && recordBest)
+        {
+            if (ghostData.carTimes.Count > 0)
+            {
+                bestGhostData.SetData(ghostData, time);
+            }
+        }
+    }
+    private void StopRecord()
+    {
+        recording = false;
+
+        GhostPlayer ghost = GetComponent<GhostPlayer>();
+        if (ghost != null) ghost.ghostData = ghostData;
     }
 }

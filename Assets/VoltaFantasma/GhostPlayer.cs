@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class GhostPlayer : MonoBehaviour
 {
-    [SerializeField] private GhostLapData bestData;
+    public GhostLapData ghostData;
     [SerializeField] private Transform ghostCar;
+    [SerializeField] private TimeController timer;
 
     private float ghostTime = 0;
 
@@ -15,29 +16,25 @@ public class GhostPlayer : MonoBehaviour
     private Quaternion lastRot;
     private Quaternion nextRot;
 
-    private void Start()
-    {
-        gameObject.SetActive(bestData.carTimes.Count>0);
-    }
-
     private void Update()
     {
-        if (ghostTime >= bestData.carTimes[bestData.carTimes.Count - 1]) return;
+        if (ghostData == null) return;
+        if (ghostTime >= ghostData.carTimes[ghostData.carTimes.Count - 1]) return;
 
         ghostTime += Time.deltaTime;
 
-        while (currentSample < bestData.carTimes.Count - 2 && bestData.carTimes[currentSample + 1] < ghostTime) 
+        while (currentSample < ghostData.carTimes.Count - 2 && ghostData.carTimes[currentSample + 1] < ghostTime) 
             currentSample++;
 
 
-        Vector3 p1 = bestData.carPositions[currentSample];
-        Vector3 p2 = bestData.carPositions[currentSample + 1];
+        Vector3 p1 = ghostData.carPositions[currentSample];
+        Vector3 p2 = ghostData.carPositions[currentSample + 1];
 
-        Quaternion r1 = bestData.carRotations[currentSample];
-        Quaternion r2 = bestData.carRotations[currentSample + 1];
+        Quaternion r1 = ghostData.carRotations[currentSample];
+        Quaternion r2 = ghostData.carRotations[currentSample + 1];
 
-        float t1 = bestData.carTimes[currentSample];
-        float t2 = bestData.carTimes[currentSample + 1];
+        float t1 = ghostData.carTimes[currentSample];
+        float t2 = ghostData.carTimes[currentSample + 1];
 
         float lerp = Mathf.InverseLerp(t1, t2, ghostTime);
 
@@ -48,12 +45,12 @@ public class GhostPlayer : MonoBehaviour
 
     public void StartGhost()
     {
-        if (bestData.carTimes.Count < 2) return;
+        if (ghostData.carTimes.Count < 2) return;
 
         ghostTime = 0;
         currentSample = 0;
 
-        ghostCar.position = bestData.carPositions[0];
-        ghostCar.rotation = bestData.carRotations[0];
+        ghostCar.position = ghostData.carPositions[0];
+        ghostCar.rotation = ghostData.carRotations[0];
     }
 }

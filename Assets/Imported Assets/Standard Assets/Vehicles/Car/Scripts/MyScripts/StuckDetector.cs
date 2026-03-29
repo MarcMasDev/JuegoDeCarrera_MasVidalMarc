@@ -73,7 +73,7 @@ public class StuckDetector : MonoBehaviour
     {
         ResetSpeeds();
 
-        transform.position = lastPosition;
+        transform.position = new Vector3(lastPosition.x, lastPosition.y + 0.5f, lastPosition.z);
         transform.rotation = lastRotation;
 
         if (restartUI != null) restartUI.alpha = 0;
