@@ -30,6 +30,10 @@ Realizado por Marc Mas Vidal el 29/03/26 para la asignatura Programación 3D.
 
 
 
+###### VÍDEO: https://drive.google.com/file/d/1iJayHglAA6uVehwxj2aqAJdCqTBwlHcD/view?usp=sharing
+
+
+
 Esta es una demo de un juego de carreras. Para probarlo hay que:
 
 Abrir la escena “MainMenu”.
