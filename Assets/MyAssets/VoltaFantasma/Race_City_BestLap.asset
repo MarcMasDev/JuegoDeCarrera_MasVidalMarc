@@ -16,3 +16,4 @@ MonoBehaviour:
   carRotations: []
   carTimes: []
   checkpointTimes: []
+  raceTime: Infinity
