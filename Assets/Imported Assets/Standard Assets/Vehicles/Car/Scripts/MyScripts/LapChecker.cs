@@ -7,7 +7,7 @@ public class LapChecker : MonoBehaviour
 {
     private int laps = 1;
     [SerializeField] private int totalLaps = 0;
-    private Checkpoint[] checkpoints;
+    [SerializeField] private Checkpoint[] checkpoints;
 
 
     [SerializeField] private TMP_Text lapInfo;
@@ -23,40 +23,17 @@ public class LapChecker : MonoBehaviour
     public static event Action<int> OnLapCompleted;
     private void Awake()
     {
-        checkpoints = FindObjectsByType<Checkpoint>(FindObjectsSortMode.None); 
+        ResetCheckpoints();
         UpdateUI();
     }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") && AllCheckpointsValidated())
         {
-            laps++;
-            OnLapCompleted?.Invoke(laps);
-            UpdateUI();
+            AddLap();
 
-            if (laps > totalLaps)
-            {
-                recorder.StopRecording();
-                cam.enabled = false;
-
-                if (timer.IsBestRace())
-                {
-                    timer.SaveBestRace();
-                    recorder.SaveGhost();
-                    ghostPlayer.StartGhost();
-                }
-                else
-                {
-                    recorder.ghostData.ResetData();
-                }
-                return;
-            }
-
-
-            for (int i = 0; i < checkpoints.Length; i++)
-            {
-                checkpoints[i].validated = false;
-            }
+            if (laps > totalLaps) EndGame();
+            ResetCheckpoints();
         }
     }
 
@@ -72,5 +49,37 @@ public class LapChecker : MonoBehaviour
     private void UpdateUI()
     {
         lapInfo.text = "Lap: " + laps + " / " + totalLaps;
+    }
+
+    private void AddLap()
+    {
+        laps++;
+        OnLapCompleted?.Invoke(laps);
+        UpdateUI();
+    }
+
+    private void EndGame()
+    {
+        recorder.StopRecording();
+        cam.enabled = false;
+
+        if (timer.IsBestRace())
+        {
+            timer.SaveBestRace();
+            recorder.SaveGhost();
+            ghostPlayer.StartGhost();
+        }
+        else
+        {
+            recorder.ghostData.ResetData();
+        }
+    }
+
+    private void ResetCheckpoints()
+    {
+        for (int i = 0; i < checkpoints.Length; i++)
+        {
+            checkpoints[i].validated = false;
+        }
     }
 }

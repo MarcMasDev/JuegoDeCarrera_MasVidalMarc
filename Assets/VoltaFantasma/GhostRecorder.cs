@@ -4,7 +4,7 @@ public class GhostRecorder : MonoBehaviour
 {
     public GhostLapData ghostData;
     public GhostLapData bestGhostData;
-    public Transform car;
+    [SerializeField] private bool recordBest = false;
     private Vector3 lastPos;
     private float time = 0;
 
@@ -33,10 +33,10 @@ public class GhostRecorder : MonoBehaviour
         time += Time.deltaTime;
 
 
-        if (Vector3.Distance(car.transform.position, lastPos) >= distanceBetweenSamples)
+        if (Vector3.Distance(transform.transform.position, lastPos) >= distanceBetweenSamples)
         {
-            ghostData.AddNewData(car, time);
-            lastPos = car.position;
+            ghostData.AddNewData(transform, time);
+            lastPos = transform.position;
         }
     }
 
@@ -45,8 +45,8 @@ public class GhostRecorder : MonoBehaviour
         ghostData.ResetData();
         recording = true;
 
-        ghostData.AddNewData(car, time);
-        lastPos = car.transform.position;
+        ghostData.AddNewData(transform, time);
+        lastPos = transform.transform.position;
         time = 0;
     }
 
@@ -57,7 +57,7 @@ public class GhostRecorder : MonoBehaviour
 
     public void SaveGhost()
     {
-        if (ghostData.carTimes.Count > 0)
+        if (ghostData.carTimes.Count > 0 && recordBest)
         {
             bestGhostData.SetData(ghostData);
         }
@@ -65,10 +65,10 @@ public class GhostRecorder : MonoBehaviour
 
     private void RecordCheckpoint(Checkpoint checkpoint)
     {
-        ghostData.checkpointTimes.Add(time);
+        if (recordBest) ghostData.checkpointTimes.Add(time);
     }
     private void RecordLap(int lap)
     {
-        ghostData.checkpointTimes.Add(time);
+        if (recordBest) ghostData.checkpointTimes.Add(time);
     }
 }
