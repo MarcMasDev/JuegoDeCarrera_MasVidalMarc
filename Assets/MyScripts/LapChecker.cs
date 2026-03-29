@@ -34,6 +34,7 @@ public class LapChecker : MonoBehaviour
             if (playerLaps >= totalLaps)
             {
                 other.GetComponent<CarUserControl>().enabled = false;
+                other.GetComponent<CarAudio>().StopSound();
                 other.enabled = false;
 
                 EndGame(other.transform);

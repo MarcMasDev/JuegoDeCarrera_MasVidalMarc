@@ -1108,9 +1108,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc009dc4176c8054d92efcfa2d59da9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostPlayer
-  ghostData: {fileID: 0}
+  ghostData: {fileID: 11400000, guid: cae7f108154603847851a85bb19740d7, type: 2}
   ghostCar: {fileID: 78151753}
-  timer: {fileID: 0}
+  timer: {fileID: 325594423}
 --- !u!1001 &93734501
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33327,8 +33327,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1464225813}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40717095, y: -0.58059746, z: -0.41428584, w: -0.5705135}
-  m_LocalPosition: {x: 602.8544, y: 46.253296, z: 267.16058}
+  m_LocalRotation: {x: 0.1748499, y: 0.21862328, z: 0.039852634, w: -0.9591888}
+  m_LocalPosition: {x: 221.14618, y: 123.50201, z: 45.990826}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -49761,9 +49761,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc009dc4176c8054d92efcfa2d59da9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostPlayer
-  ghostData: {fileID: 0}
+  ghostData: {fileID: 11400000, guid: 90ad16ff60f88234b8d2c8e1be7d7d61, type: 2}
   ghostCar: {fileID: 2036883180}
-  timer: {fileID: 0}
+  timer: {fileID: 1937376642}
 --- !u!1 &2040405567
 GameObject:
   m_ObjectHideFlags: 0
