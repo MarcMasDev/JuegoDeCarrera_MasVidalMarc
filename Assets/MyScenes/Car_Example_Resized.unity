@@ -18768,6 +18768,8 @@ MonoBehaviour:
   - {fileID: 1606068440}
   - {fileID: 1453353848}
   - {fileID: 1593181009}
+  - {fileID: 78151756}
+  - {fileID: 2036883183}
   menu: {fileID: 1667456230}
 --- !u!1 &720539036
 GameObject:
@@ -33328,7 +33330,7 @@ Transform:
   m_GameObject: {fileID: 1464225813}
   serializedVersion: 2
   m_LocalRotation: {x: 0.1748499, y: 0.21862328, z: 0.039852634, w: -0.9591888}
-  m_LocalPosition: {x: 221.14618, y: 123.50201, z: 45.990826}
+  m_LocalPosition: {x: 669.62463, y: 124.72647, z: 255.59737}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -18,7 +18,7 @@ public class GhostPlayer : MonoBehaviour
 
     private void Update()
     {
-        if (ghostData == null) return;
+        if (ghostData == null || ghostData.carTimes.Count == 0) return;
         if (ghostTime >= ghostData.carTimes[ghostData.carTimes.Count - 1]) return;
 
         ghostTime += Time.deltaTime;

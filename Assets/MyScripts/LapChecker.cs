@@ -33,9 +33,7 @@ public class LapChecker : MonoBehaviour
 
             if (playerLaps >= totalLaps)
             {
-                other.GetComponent<CarUserControl>().enabled = false;
-                other.GetComponent<CarAudio>().StopSound();
-                other.enabled = false;
+                ResetPlayer(other);
 
                 EndGame(other.transform);
             }
@@ -89,5 +87,13 @@ public class LapChecker : MonoBehaviour
         {
             checkpoints[i].validated = false;
         }
+    }
+
+    private void ResetPlayer(Collider other)
+    {
+        other.GetComponent<CarUserControl>().enabled = false;
+        other.GetComponent<CarAudio>().StopSound();
+        other.GetComponent<StuckDetector>().enabled = false;
+        other.enabled = false;
     }
 }
